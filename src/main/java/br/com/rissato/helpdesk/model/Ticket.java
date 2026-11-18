@@ -1,9 +1,9 @@
+package br.com.rissato.helpdesk.model;
+
 import java.time.LocalDateTime;
-import main.java.br.com.rissato.helpdesk.service.Closeable;
-import main.java.br.com.rissato.helpdesk.model.User;
-import main.java.br.com.rissato.helpdesk.model.Category;
-import main.java.br.com.rissato.helpdesk.model.TicketStatus;
-import main.java.br.com.rissato.helpdesk.model.Priority;
+import br.com.rissato.helpdesk.service.Closeable;
+
+
 
 
 public class Ticket implements Closeable {
@@ -14,17 +14,14 @@ public class Ticket implements Closeable {
     private Priority priority;
     private User requester;
     private Category category;
-    private final LocalDateTime openedAt;
-    private final LocalDateTime closedAt;
+    private LocalDateTime openedAt;
+    private LocalDateTime closedAt;
 
-    boolean isOpen(){
+    public boolean isOpen(){
         return status.isOpen();
         
     }
     
-    private void setId(long id){
-        this.id = id;
-    }
     public long getId(){
         return id;
     }
@@ -52,20 +49,20 @@ public class Ticket implements Closeable {
     public LocalDateTime getClosedAt(){
         return closedAt;
     }
-    public Ticket(long id, String title, String description, TicketStatus status, Priority priority, User requester, Category category, LocalDateTime openedAt, LocalDateTime closedAt){
+    public Ticket(long id, String title, String description, Priority priority, User requester, Category category){
         this.id = id;
         this.title = title;
         this.description = description;
-        this.status = status;
+        this.status = TicketStatus.OPEN;
         this.priority = priority;
         this.requester = requester;
         this.category = category;
-        this.openedAt = openedAt;
-        this.closedAt = closedAt;
+        this.openedAt = LocalDateTime.now();
     }
+    @Override 
     public void close() {
-        if (!isOpen()) {
-            throw new IllegalStateException("Ticket is already closed.");
+        if (this.status != TicketStatus.RESOLVED) {
+            throw new IllegalStateException("Cannot close a ticket that is not resolved.");
         }
         this.status = TicketStatus.CLOSED;
     }
@@ -74,29 +71,66 @@ public class Ticket implements Closeable {
             throw new IllegalStateException("Ticket is already closed.");
         }
         this.status = TicketStatus.CANCELED;
+        this.closedAt = LocalDateTime.now();
     }
     public void resolve() {
         if (!isOpen()) {
             throw new IllegalStateException("Ticket is already closed.");
         }
         this.status = TicketStatus.RESOLVED;
+        this.closedAt = LocalDateTime.now();
     }
-    public void setStatus(TicketStatus status) {
-        this.status = status;
+
+    public void changeStatus(TicketStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("Status cannot be null.");
+        }
+        if (status == TicketStatus.REOPENED && (this.status == TicketStatus.CANCELED || this.status == TicketStatus.RESOLVED || this.status == TicketStatus.CLOSED)) {
+            this.status = TicketStatus.REOPENED;
+            this.closedAt = null;
+            return;
+        }
+        if (status == TicketStatus.REOPENED && this.status != TicketStatus.CANCELED && this.status != TicketStatus.RESOLVED && this.status != TicketStatus.CLOSED) {
+            throw new IllegalStateException("Cannot reopen a ticket that is not closed.");
+        }
+        if (!isOpen()) {
+            throw new IllegalStateException("Cannot change status of a closed ticket.");
+        }
+        if (status == TicketStatus.CLOSED || status == TicketStatus.CANCELED || status == TicketStatus.RESOLVED) {
+            throw new IllegalStateException("Cannot change status to a closed state.");
+        }
+    
+            this.status = status;   
     }
+
     public void setPriority(Priority priority) {
+        if (!isOpen()) {
+            throw new IllegalStateException("Cannot change priority of a closed ticket.");
+        }
         this.priority = priority;
     }
     public void setRequester(User requester) {
+        if (!isOpen()) {
+            throw new IllegalStateException("Cannot change requester of a closed ticket.");
+        }
         this.requester = requester;
     }
     public void setCategory(Category category) {
+        if (!isOpen()) {
+            throw new IllegalStateException("Cannot change category of a closed ticket.");
+        }
         this.category = category;
     }
     public void setTitle(String title) {
+        if (!isOpen()) {
+            throw new IllegalStateException("Cannot change title of a closed ticket.");
+        }
         this.title = title;
     }
     public void setDescription(String description) {
+        if (!isOpen()) {
+            throw new IllegalStateException("Cannot change description of a closed ticket.");
+        }
         this.description = description;
     }
 }

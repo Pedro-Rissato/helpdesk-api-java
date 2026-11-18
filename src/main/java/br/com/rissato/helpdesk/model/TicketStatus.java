@@ -1,3 +1,5 @@
+package br.com.rissato.helpdesk.model;
+
 public enum TicketStatus {
     OPEN(true),
     IN_PROGRESS(true),
@@ -5,6 +7,7 @@ public enum TicketStatus {
     WAITING_IN_QUEUE(true),
     CANCELED(false),
     RESOLVED(false),
+    REOPENED(true),
     CLOSED(false);
 
     private final boolean open;
