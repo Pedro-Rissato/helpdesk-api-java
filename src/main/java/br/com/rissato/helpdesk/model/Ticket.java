@@ -1,7 +1,7 @@
 package br.com.rissato.helpdesk.model;
 
-import java.time.LocalDateTime;
 import br.com.rissato.helpdesk.service.Closeable;
+import java.time.LocalDateTime;
 
 
 
@@ -16,6 +16,7 @@ public class Ticket implements Closeable {
     private Category category;
     private LocalDateTime openedAt;
     private LocalDateTime closedAt;
+    private Agent assignedAgent;
 
     public boolean isOpen(){
         return status.isOpen();
@@ -56,6 +57,7 @@ public class Ticket implements Closeable {
         this.status = TicketStatus.OPEN;
         this.priority = priority;
         this.requester = requester;
+        this.assignedAgent = null;
         this.category = category;
         this.openedAt = LocalDateTime.now();
     }
@@ -132,5 +134,33 @@ public class Ticket implements Closeable {
             throw new IllegalStateException("Cannot change description of a closed ticket.");
         }
         this.description = description;
+    }
+    public void assignAgent(Agent agent) {
+        if (!isOpen()) {
+            throw new IllegalStateException("Cannot assign an agent to a closed ticket.");
+        }
+        this.assignedAgent = agent;
+    }
+    public Agent getAssignedAgent() {
+        return assignedAgent;
+    }
+
+    public void unassignAgent() {
+        if (!isOpen()) {
+            throw new IllegalStateException("Cannot unassign an agent from a closed ticket.");
+        }
+        this.assignedAgent = null;
+    }
+
+    public Ticket(long id, String title, String description, Priority priority, User requester, Category category, LocalDateTime openedAt) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = TicketStatus.OPEN;
+        this.priority = priority;
+        this.requester = requester;
+        this.assignedAgent = null;
+        this.category = category;
+        this.openedAt = openedAt;
     }
 }
