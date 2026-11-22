@@ -1,19 +1,19 @@
 package br.com.rissato.helpdesk.demo;
 
+import br.com.rissato.helpdesk.Enum.TicketPriority;
+import br.com.rissato.helpdesk.Enum.TicketStatus;
+import br.com.rissato.helpdesk.model.Agent;
+import br.com.rissato.helpdesk.model.Category;
 import br.com.rissato.helpdesk.model.Ticket;
 import br.com.rissato.helpdesk.model.User;
-import br.com.rissato.helpdesk.model.Priority;
-import br.com.rissato.helpdesk.model.Category;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
-import br.com.rissato.helpdesk.model.TicketStatus;
-import br.com.rissato.helpdesk.model.Agent;
-import java.util.Set;
-import java.util.HashSet;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class TicketCollectionDemo {
     private static List<Ticket> findOldestOpenTicket(List<Ticket> ticketList){
@@ -33,11 +33,11 @@ public class TicketCollectionDemo {
         User user1 = new User(1L, "User 1", "user1@example.com", true, true, null);
         Category category1 = new Category(1L, "Category 1", "Description 1");
         List <Ticket> ticketList = new ArrayList<>();
-        Ticket ticket1 = new Ticket(1L, "Ticket 1", "Description 1", Priority.HIGH, user1, category1, now1.minusDays(10));
-        Ticket ticket2 = new Ticket(2L, "Ticket 2", "Description 2", Priority.MEDIUM, user1, category1, now1.minusDays(5));
-        Ticket ticket3 = new Ticket(3L, "Ticket 3", "Description 3", Priority.LOW, user1, category1, now1.minusDays(2));
-        Ticket ticket4 = new Ticket(4L, "Ticket 4", "Description 4", Priority.URGENT, user1, category1, now1.minusDays(1));
-        Ticket ticket5 = new Ticket(5L, "Ticket 5", "Description 5", Priority.HIGH, user1, category1, now1.minusDays(3));
+        Ticket ticket1 = new Ticket(1L, "Ticket 1", "Description 1", TicketPriority.HIGH, user1, category1, now1.minusDays(10));
+        Ticket ticket2 = new Ticket(2L, "Ticket 2", "Description 2", TicketPriority.MEDIUM, user1, category1, now1.minusDays(5));
+        Ticket ticket3 = new Ticket(3L, "Ticket 3", "Description 3", TicketPriority.LOW, user1, category1, now1.minusDays(2));
+        Ticket ticket4 = new Ticket(4L, "Ticket 4", "Description 4", TicketPriority.URGENT, user1, category1, now1.minusDays(1));
+        Ticket ticket5 = new Ticket(5L, "Ticket 5", "Description 5", TicketPriority.HIGH, user1, category1, now1.minusDays(3));
 
         
 
@@ -68,7 +68,7 @@ public class TicketCollectionDemo {
         }
          List<Ticket> urgentTickets = new ArrayList<>();
         for(Ticket ticket : ticketList){
-            if(ticket.getPriority() == Priority.URGENT || ticket.getPriority() == Priority.HIGH){
+            if(ticket.getPriority() == TicketPriority.URGENT || ticket.getPriority() == TicketPriority.HIGH){
                 urgentTickets.add(ticket);
             }
         }

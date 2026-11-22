@@ -1,17 +1,18 @@
 package br.com.rissato.helpdesk.model;
 
-import br.com.rissato.helpdesk.service.Closeable;
+import br.com.rissato.helpdesk.Enum.TicketPriority;
+import br.com.rissato.helpdesk.Enum.TicketStatus;
 import java.time.LocalDateTime;
 
 
 
 
-public class Ticket implements Closeable {
+public class Ticket{
     private long id;
     private String title;
     private String description;
     private TicketStatus status;
-    private Priority priority;
+    private TicketPriority priority;
     private User requester;
     private Category category;
     private LocalDateTime openedAt;
@@ -35,7 +36,7 @@ public class Ticket implements Closeable {
     public TicketStatus getStatus(){
         return status;
     }
-    public Priority getPriority(){
+    public TicketPriority getPriority(){
         return priority;
     }
     public User getRequester(){
@@ -50,7 +51,7 @@ public class Ticket implements Closeable {
     public LocalDateTime getClosedAt(){
         return closedAt;
     }
-    public Ticket(long id, String title, String description, Priority priority, User requester, Category category){
+    public Ticket(long id, String title, String description, TicketPriority priority, User requester, Category category){
         this.id = id;
         this.title = title;
         this.description = description;
@@ -61,7 +62,6 @@ public class Ticket implements Closeable {
         this.category = category;
         this.openedAt = LocalDateTime.now();
     }
-    @Override 
     public void close() {
         if (this.status != TicketStatus.RESOLVED) {
             throw new IllegalStateException("Cannot close a ticket that is not resolved.");
@@ -105,7 +105,7 @@ public class Ticket implements Closeable {
             this.status = status;   
     }
 
-    public void setPriority(Priority priority) {
+    public void setPriority(TicketPriority priority) {
         if (!isOpen()) {
             throw new IllegalStateException("Cannot change priority of a closed ticket.");
         }
@@ -152,7 +152,7 @@ public class Ticket implements Closeable {
         this.assignedAgent = null;
     }
 
-    public Ticket(long id, String title, String description, Priority priority, User requester, Category category, LocalDateTime openedAt) {
+    public Ticket(long id, String title, String description, TicketPriority priority, User requester, Category category, LocalDateTime openedAt) {
         this.id = id;
         this.title = title;
         this.description = description;
