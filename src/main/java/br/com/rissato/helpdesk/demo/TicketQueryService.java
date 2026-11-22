@@ -9,7 +9,6 @@ import br.com.rissato.helpdesk.model.Category;
 import br.com.rissato.helpdesk.model.Ticket;
 import br.com.rissato.helpdesk.model.User;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
