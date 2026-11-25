@@ -8,7 +8,9 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 !**/src/main/**/target/
+# Demo package
 src/main/java/br/com/rissato/helpdesk/demo/
+
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
@@ -17,3 +19,4 @@ src/main/java/br/com/rissato/helpdesk/demo/
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+src/main/java/br/com/rissato/helpdesk/demo/TicketQueryService.java

@@ -1,4 +1,4 @@
-package br.com.rissato.helpdesk.Enum;
+package br.com.rissato.helpdesk.enums;
 
 public enum TicketStatus {
     OPEN(true),
